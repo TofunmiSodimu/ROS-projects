@@ -69,10 +69,10 @@ class Follower(Node):
     
     def move_turtle2(self):
         # Display turtle1's current pose
-        self.get_logger().info('Turtle 1\'s pose is : x = {},  y = {},  theta = {}'.format(self.turtle1_pose_val[0],self.turtle1_pose_val[1],self.turtle1_pose_val[2]))
+        #self.get_logger().info('Turtle 1\'s pose is : x = {},  y = {},  theta = {}'.format(self.turtle1_pose_val[0],self.turtle1_pose_val[1],self.turtle1_pose_val[2]))
             
         # Display turtle2's current pose
-        self.get_logger().info('Turtle 2\'s pose is : x = {},  y = {},  theta = {}'.format(self.turtle2_pose_val[0],self.turtle2_pose_val[1],self.turtle2_pose_val[2]))
+        #self.get_logger().info('Turtle 2\'s pose is : x = {},  y = {},  theta = {}'.format(self.turtle2_pose_val[0],self.turtle2_pose_val[1],self.turtle2_pose_val[2]))
         
         # Calculate new angle for turtle2
         self.new_angle = math.atan2((self.turtle1_pose_val[1]-self.turtle2_pose_val[1]),(self.turtle1_pose_val[0]-self.turtle2_pose_val[0]))
@@ -91,10 +91,10 @@ class Follower(Node):
         msg_lin.z = 0.0
           
         # Gradually, turn turtle2 in place - clockwise
-        if (self.new_angle-self.turtle2_pose_val[2]) > 0.01:
+        if (self.new_angle-self.turtle2_pose_val[2]) >= 0.1:
 
             # Publish new angular command vel for second robot
-            msg_ang.z = 0.7
+            msg_ang.z = 1.0
             msg = Twist()
             msg.angular = msg_ang
             msg.linear = msg_lin
@@ -103,10 +103,10 @@ class Follower(Node):
             self.status = 'Turning Clockwise'
 
         # Gradually, turn turtle2 in place - counterclockwise
-        elif (self.turtle2_pose_val[2] - self.new_angle) > 0.01:
+        elif (self.turtle2_pose_val[2] - self.new_angle) >= 0.1:
 
             # Publish new angular command vel for turtle2
-            msg_ang.z = -0.7
+            msg_ang.z = -1.0
             msg = Twist()
             msg.angular = msg_ang
             msg.linear = msg_lin
@@ -115,9 +115,9 @@ class Follower(Node):
             self.status = 'Turning Counterclockwise'
 
         # Move turtle2 forward
-        elif self.dis > 0.3:
+        elif self.dis >= 1.0:
             # Publish new linear vel for turtle2
-            msg_lin.x = 1.5
+            msg_lin.x = 1.0
             msg = Twist()
             msg.angular = msg_ang
             msg.linear = msg_lin
