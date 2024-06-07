@@ -10,4 +10,4 @@
   - Source the overlay in another terminal - 'source install/setup.bash'. Run 'ros2 run turtlesim turtle_teleop_key'.
 
 #### Follow Me Demo
-![Screencast from 2024-06-07 12-35-02](https://github.com/TofunmiSodimu/ROS-projects/assets/35805326/83af3f25-3fd7-4116-8702-3dc9590bfcfa)
+![Screencast from 2024-06-07 12-35-02 (1)](https://github.com/TofunmiSodimu/ROS-projects/assets/35805326/388dd5b1-f367-4079-ade6-7291a491c3d6)
