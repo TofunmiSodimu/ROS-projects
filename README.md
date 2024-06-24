@@ -86,7 +86,18 @@ To use this package:
   - Source the overlay in another terminal - 'source install/setup.bash'. Run 'ros2 run nav_stack navigation.py'.
 
 
-7. zslsl
+7. 'team_23_final' - This ROS2 package controls the turtlebot3 robot to navigate a maze by classifying images of signs on the wall using a pre-trained object classifier model.
+   - 'image_node' node: This node subscribes to the camera topic of the turtlebot3 robot, processes the captured image, and makes a request to the classifier service to determine the classification of the image (left, right, turn around, stop, goal)
+   - 'classifier_node' node: This node loads the pre-trained classifier model and uses this to classify images as requested by the 'image_node'.
+   - 'image_classifier.py' : This python program trains and saves the classifier model as a pkl file.
+   - 'training_csv.py': This python program preprocesses the training/validation data for the classifier model.
+
+To use this package:
+  - ** Source underlay in all terminals used by either adding to shell startup script or running in terminal **
+  - In one terminal, cd into ROS2 workspace where package is stored and build - 'colcon build --packages-select team_23_final'
+  - Source the overlay in another terminal - 'source install/setup.bash'. Run 'ros2 run team_23_final image_node'.
+  - Source the overlay in another terminal - 'source install/setup.bash'. Run 'ros2 run team_23_final classifier_node'.
+     
 <p align="center"> 
 <h4 align="center">Maze Navigation</h4>
 </p>
