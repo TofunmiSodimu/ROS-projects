@@ -12,7 +12,7 @@ To use this package:
 [![Follow Me Demo](https://github.com/TofunmiSodimu/ROS-projects/blob/main/follow_me.png)](https://github.com/TofunmiSodimu/ROS-projects/blob/main/Follow_me.mp4)
 
 ![Demo](https://github.com/TofunmiSodimu/ROS-projects/assets/35805326/388dd5b1-f367-4079-ade6-7291a491c3d6)
-![Demo](https://github.com/TofunmiSodimu/ROS-projects/assets/35805326/062a366a-b3cc-4828-93dd-f4cb5364cd3f)
+![Demo](https://github.com/TofunmiSodimu/ROS-projects/blob/main/Follow_me.gif)
 
 
 
