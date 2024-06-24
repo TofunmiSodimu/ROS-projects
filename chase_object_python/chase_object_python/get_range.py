@@ -33,6 +33,8 @@ class MinimalSubscriber(Node):
         super().__init__('minimal_video_subscriber')
         self.angle1 = Float32()
         self.coordinates_x = 0
+        self.subscription = self.create_subscription(Point,'topic',self.listener_callback,10)
+        self.subscription  # prevent unused variable warning
 
         # Set up QoS Profiles for passing LIDAR info over WiFi
         lidar_qos_profile = QoSProfile(
