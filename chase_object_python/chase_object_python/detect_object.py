@@ -1,7 +1,6 @@
-# Bare Bones Code to View the Image Published from the Turtlebot3 on a Remote Computer
 # Intro to Robotics Research 7785
 # Georgia Institute of Technology
-# Sean Wilson, 2022
+# Tofunmi Sodimu
 
 import rclpy
 from rclpy.node import Node
