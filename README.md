@@ -15,6 +15,7 @@
    <img src="https://github.com/TofunmiSodimu/ROS-projects/blob/main/extra/Follow_me.gif" alt="animated" />
 </p>
 
+
 2. 'find_ball.py' - python code that uses opencv to detect a circular object in a camera frame and draws the circle around the object. This code is used in subsequent ROS2 packages.
 
   To use this file:
@@ -22,7 +23,7 @@
    - Make file an executable and run from terminal using ./find_ball.py
 
 
-3. 'object_follower_python' - This is a ROS2 package that may be used to rotate a turtlebot3 robot based on the movement of a circular object in its field of view (FOV).
+3. 'object_follower_python' - This is a ROS2 package that may be used to rotate a turtlebot3 robot based on the movement of a circular object in its camera's field of view (FOV).
    - 'find_object' node: This node subscribes to the camera topic on the turtlebot3 robot, determines the center coordinates of the circular object in its FOV, publishes the center coordinates as a geometry_msgs/Point message.
    - 'rotate_robot' node: This node subscribes to the topic over which the 'find_object' node publishes center coordinates and rotates the turtlebot3 robot such that it's always facing the circular object.
 
@@ -40,5 +41,22 @@ To use this package:
 </p>
 
 
-4. dd;;d
-5. akka
+4. 'chase_object_python' - This is a ROS2 package that controls the turtlebot3 robot to 'chase' a circular object in its field of view, and maintain a desired distance using the camera and LIDAR sensors for object detection and distance measurements.
+      - 'detect_object' node: This node subscribes to the camera topic on the turtlebot3 robot, determines the center coordinates of the circular object in its FOV, publishes the center coordinates as a geometry_msgs/Point message.
+      - 'get_object_range' node: This node subscribes to the topic over which 'detect_object' is publishing center coordinates. It uses the object's coordinates in the FOV of the robot to determine the angle of the object in the FOV. This node then subscribes to the lidar topic on the turtlebot3 robot, and gets the depth corresponding to the pre-determined angle. Lastly, this node publishes the depth and the corresponding angle as a std_msgs/Float32MultiArray message.
+      - 'chase_object' node: This node subscribes to the topic published by the 'get_object_range' node and uses the angle and depth values to implement a controller to make the robot chase the object while maintaining a desired distance.
+
+To use this package:
+  - ** Source underlay in all terminals used by either adding to shell startup script or running in terminal **
+  - In one terminal, cd into ROS2 workspace where package is stored and build - 'colcon build --packages-select chase_object_python'
+  - Source the overlay in another terminal - 'source install/setup.bash'. Run 'ros2 run chase_object_python detect_object.py'.
+  - Source the overlay in another terminal - 'source install/setup.bash'. Run 'ros2 run chase_object_python get_object_range.py'.
+  - Source the overlay in another terminal - 'source install/setup.bash'. Run 'ros2 run chase_object_python chase_object.py'.
+
+<p align="center"> 
+   <h4 align="center">Chase Object Demo</h4>
+</p>
+<p align="center"> 
+   <img src="https://github.com/TofunmiSodimu/ROS-projects/blob/main/extra/chase_object_resize.gif" alt="animated" />
+</p>
+6. akka
