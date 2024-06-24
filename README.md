@@ -12,4 +12,6 @@
 #### Follow Me Demo
 ![Screencast from 2024-06-07 12-35-02 (1)](https://github.com/TofunmiSodimu/ROS-projects/assets/35805326/388dd5b1-f367-4079-ade6-7291a491c3d6)
 
-2. 'find_ball.py' - python code that uses opencv to detect a circular object in the camera frame and draws the circle around the object. This code is used in subsequent ROS2 packages.
+2. 'find_ball.py' - python code that uses opencv to detect a circular object in a camera frame and draws the circle around the object. This code is used in subsequent ROS2 packages.
+
+3. '
