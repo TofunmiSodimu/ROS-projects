@@ -1,85 +1,90 @@
-# Copyright 2016 Open Source Robotics Foundation, Inc.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 import rclpy
 from rclpy.node import Node
-from sensor_msgs.msg import CompressedImage
-from rclpy.qos import QoSProfile, QoSDurabilityPolicy, QoSReliabilityPolicy, QoSHistoryPolicy
-from geometry_msgs.msg import Point
+from std_msgs.msg import Float32
 from std_msgs.msg import Float32MultiArray
-from sensor_msgs.msg import LaserScan
+from sensor_msgs.msg import CompressedImage, LaserScan
+from geometry_msgs.msg import Point, Twist
+from rclpy.qos import QoSProfile, QoSDurabilityPolicy, QoSReliabilityPolicy
+
 import sys
 
 import numpy as np
 import cv2
 from cv_bridge import CvBridge
-import math
-angle = 0.0
 
 class MinimalSubscriber(Node):
 
     def __init__(self):
-        super().__init__('minimal_video_subscriber')
 
-        self.subscription = self.create_subscription(Point,'topic',self.listener_callback,10)
-        self.subscription  # prevent unused variable warning
+        # Creates the node.
+        super().__init__('object_range')
 
-        # Set up QoS Profiles for passing LIDAR info over WiFi
         lidar_qos_profile = QoSProfile(
             reliability = QoSReliabilityPolicy.RMW_QOS_POLICY_RELIABILITY_BEST_EFFORT,
             history = QoSHistoryPolicy.RMW_QOS_POLICY_HISTORY_KEEP_LAST,
             durability = QoSDurabilityPolicy.RMW_QOS_POLICY_DURABILITY_VOLATILE,
-            depth = 1
+            depth = 10
         )
 
-        #Declare that the minimal_subscriber node is subscribing to the /scan topic.
-        self._minimal_subscriber = self.create_subscription(LaserScan,'/scan',self.listener_lidar,lidar_qos_profile)
-        self._minimal_subscriber  # prevent unused variable warning
+        self.pos_x = 0
+        self.pos_y = 0
 
-        #Declare publisher for angle and depth
-        self.publisher1_ = self.create_publisher(Float32MultiArray,'angle_depth',10)
+        self.angle_pos = Float32()
+        self.dist = Float32()
 
+        self.object_pos = self.create_subscription(Point, 'topic', self.get_pixel_pos, 1)
+        self.object_pos
 
-    def listener_callback(self, msg):
-        # Convert horizontal coordinates to horizontal angle
-        coordinates_x = msg.x
-        global angle
-        angle = ((coordinates_x/ 320) * 62.2)
-   
-    def listener_lidar(self,msg):
-        degrees1 = (((msg.angle_max - msg.angle_min) * 180) / math.pi)
-        depth1_index = (round((len(msg.ranges)/degrees1) * angle))
-        depth1 = (msg.ranges[depth1_index])
-        new_angle = angle - 31.1
-        new_message = Float32MultiArray(data = [new_angle, depth1])
-        self.publisher1_.publish(new_message)
-        #self.get_logger().info('Publishing: "%s"' %str(new_message))
+        self.lidar_data = self.create_subscription(LaserScan, '/scan', self.get_lidar_data, lidar_qos_profile)
+
+        self.publish_angle_pos = self.create_publisher(Float32, '/angle_pos', 5)
+        self.publish_distance = self.create_publisher(Float32MultiArray, '/angle_depth', 5)
     
 
-def main(args=None):
-    rclpy.init(args=args)
+    def get_lidar_data(self, msg):
+        ranges = msg.ranges
+        
+        size_ranges = len(ranges)
+        ratio = size_ranges/360
 
-    minimal_subscriber = MinimalSubscriber()
+        print(self.angle_pos.data)
 
-    rclpy.spin(minimal_subscriber)
-    
-    # Destroy the node explicitly
-    # (optional - otherwise it will be done automatically
-    # when the garbage collector destroys the node object)
-    minimal_subscriber.destroy_node()
-    rclpy.shutdown()
+        if self.angle_pos.data == float('inf'):
+            self.dist.data = float('inf')
+        elif self.angle_pos.data != float('inf'):        
+            ratio_index = round(ratio*self.angle_pos.data)
+            self.dist.data = np.nanmean(ranges[ratio_index-2:ratio_index+2])
+        print(self.dist.data)
+
+        new_message = Float32MultiArray(data = [self.angle_pos.data, self.dist.data])
+        self.publish_distance.publish(new_message)
+
+
+    def get_pixel_pos(self, msg):
+        self.pos_x = msg.x
+        self.pos_y = msg.y
+
+        print('X position: ', self.pos_x)
+        print('Y position: ', self.pos_y)
+        print()
+        
+        if self.pos_x == float('inf') and self.pos_y == float('inf'):
+            self.angle_pos.data = float('inf')
+        else:
+            self.angle_pos.data = (62.2 * self.pos_x/320) - 31.1
+
+
+
+def main():
+	rclpy.init() #init routine needed for ROS2.
+	minimal_subscriber = MinimalSubscriber() #Create class object to be used.
+	
+	rclpy.spin(minimal_subscriber) # Trigger callback processing.		
+
+	#Clean up and shutdown.
+	minimal_subscriber.destroy_node()  
+	rclpy.shutdown()
 
 
 if __name__ == '__main__':
-    main()
+	main()

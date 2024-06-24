@@ -1,6 +1,7 @@
+# Bare Bones Code to View the Image Published from the Turtlebot3 on a Remote Computer
 # Intro to Robotics Research 7785
 # Georgia Institute of Technology
-# Tofunmi Sodimu
+# Sean Wilson, 2022
 
 import rclpy
 from rclpy.node import Node
@@ -8,6 +9,7 @@ from sensor_msgs.msg import CompressedImage
 from rclpy.qos import QoSProfile, QoSDurabilityPolicy, QoSReliabilityPolicy, QoSHistoryPolicy
 from geometry_msgs.msg import Point
 import sys
+import time
 
 import numpy as np
 import cv2
@@ -64,21 +66,60 @@ class MinimalVideoSubscriber(Node):
 				
 
 	def get_image(self):
+		time.sleep(0.5) # seconds
 		return self._imgBGR
 
 	def show_image(self, img):
-		blur_img = cv2.medianBlur(img,7)
-		gray_img=cv2.cvtColor(blur_img, cv2.COLOR_BGR2GRAY)
-		circles=cv2.HoughCircles(gray_img, cv2.HOUGH_GRADIENT,1,90,param1=70,param2=60,minRadius=0,maxRadius=0)
-		if(circles is not None):
-			circles = np.uint16(np.around(circles))
-			for i in circles[0,:]:
-				cv2.circle(img, (i[0], i[1]), i[2], (0,255,0),3)
-				cv2.circle(img,(i[0],i[1]),2,(0,0,255),3)
-				message = Point(x=float(i[0]),y=float(i[1]),z=0.0)
-				self.publisher_.publish(message)
+
+		# Use masking
+		HSVframe = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+
+		# Green
+		sensitivity = 30
+		lower = np.array([60-sensitivity,25, 25])
+		upper = np.array([60+sensitivity, 255, 255])
+
+		# Blue
+		#sensitivity = 0
+		#lower = np.array([100-sensitivity, 150, 0])
+		#upper = np.array([140-sensitivity,255,255])
+
+		mask = cv2.inRange(HSVframe,lower, upper)
+		mask = cv2.bitwise_not(mask)
+
+		# Blur image
+		blur_img = cv2.medianBlur(mask,5)
+		#cv2.imshow("mask", mask)
+
+		# Blob detection
+		detector = cv2.SimpleBlobDetector_create()
+
+		# Blur image again
+		blur_img2 = cv2.medianBlur(blur_img,5)
+
+		# Detect Blobs
+		keypoints = detector.detect(blur_img2)
+		im_with_keypoints = cv2.drawKeypoints(blur_img2, keypoints, np.array([]), (0,0,255), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+		cv2.imshow("Keypoints", im_with_keypoints)
+		if len(keypoints) > 0:
+			pts = cv2.KeyPoint_convert(keypoints)
+			message = Point(x=float(pts[0,0]),y=float(pts[0,1]),z=0.0)
+			self.publisher_.publish(message)
+			self.get_logger().info('Publishing: "%s"' %str(message))
+			
+
+		#blur_img = cv2.medianBlur(img,7)
+		#gray_img=cv2.cvtColor(blur_img, cv2.COLOR_BGR2GRAY)
+		#circles=cv2.HoughCircles(gray_img, cv2.HOUGH_GRADIENT,1,90,param1=70,param2=60,minRadius=0,maxRadius=0)
+		#if(circles is not None):
+			#circles = np.uint16(np.around(circles))
+			#for i in circles[0,:]:
+				#cv2.circle(img, (i[0], i[1]), i[2], (0,255,0),3)
+				#cv2.circle(img,(i[0],i[1]),2,(0,0,255),3)
+				#message = Point(x=float(i[0]),y=float(i[1]),z=0.0)
+				#self.publisher_.publish(message)
 				#self.get_logger().info('Publishing: "%s"' %str(message))
-		cv2.imshow('detected circles', gray_img)
+		#cv2.imshow('detected circles', gray_img)
 	
 		#cv2.imshow(self._titleOriginal, img)
 		# Cause a slight delay so image is displayed

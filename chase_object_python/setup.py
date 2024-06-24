@@ -23,6 +23,7 @@ setup(
             'talker = chase_object_python.detect_object:main',
             'listener_1 = chase_object_python.get_object_range:main',
             'listener_2 = chase_object_python.chase_object:main',
+            'listener_3 = chase_object_python.get_range:main',
         ],
     },
 )
