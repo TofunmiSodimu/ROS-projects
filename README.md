@@ -9,11 +9,7 @@ To use this package:
   - Source the overlay in another terminal - 'source install/setup.bash'. Run 'ros2 run turtlesim turtle_teleop_key'.
 
 #### Follow Me Demo
-[![Follow Me Demo](https://github.com/TofunmiSodimu/ROS-projects/blob/main/follow_me.png)](https://github.com/TofunmiSodimu/ROS-projects/blob/main/Follow_me.mp4)
-
-![Demo](https://github.com/TofunmiSodimu/ROS-projects/assets/35805326/388dd5b1-f367-4079-ade6-7291a491c3d6)
 ![Demo](https://github.com/TofunmiSodimu/ROS-projects/blob/main/Follow_me.gif)
-
 
 
 2. 'find_ball.py' - python code that uses opencv to detect a circular object in a camera frame and draws the circle around the object. This code is used in subsequent ROS2 packages.
@@ -21,6 +17,7 @@ To use this package:
 To use this file:
    - Run from within IDE e.g., VS Code, OR
    - Make file an executable and run from terminal using ./find_ball.py
+
 
 3. 'object_follower_python' - This is a ROS2 package that may be used to rotate a turtlebot3 robot based on the movement of a circular object in its field of view (FOV).
    - 'find_object' node: This node subscribes to the camera topic on the turtlebot3 robot, determines the center coordinates of the circular object in its FOV, publishes the center coordinates as a geometry_msgs/Point message.
@@ -33,7 +30,7 @@ To use this package:
   - Source the overlay in another terminal - 'source install/setup.bash'. Run 'ros2 run object_follower_python rotate_robot.py'.
     
 #### Object Follower Demo
-![Demo2](https://github.com/TofunmiSodimu/ROS-projects/assets/35805326/ce3acf38-ff81-441b-9ff1-6dec9d81eac5)
+![Demo2](https://github.com/TofunmiSodimu/ROS-projects/blob/main/Object_follower_resized.gif)
 
 
 4. dd;;d
