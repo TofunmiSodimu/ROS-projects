@@ -26,7 +26,6 @@ import numpy as np
 import cv2
 from cv_bridge import CvBridge
 import math
-#angle = 0.0
 
 class MinimalSubscriber(Node):
 
@@ -34,8 +33,6 @@ class MinimalSubscriber(Node):
         super().__init__('minimal_video_subscriber')
         self.angle1 = Float32()
         self.coordinates_x = 0
-        self.subscription = self.create_subscription(Point,'topic',self.listener_callback,10)
-        self.subscription  # prevent unused variable warning
 
         # Set up QoS Profiles for passing LIDAR info over WiFi
         lidar_qos_profile = QoSProfile(
@@ -57,9 +54,8 @@ class MinimalSubscriber(Node):
         self.coordinates_x = msg.x
         frame_width = 320
         fov = 62.2
-        #global angle
         self.angle1.data = ((self.coordinates_x/frame_width) * fov) - 31.1
-        print(self.angle1.data)
+        # print(self.angle1.data)
    
     def listener_lidar(self,msg):
         ranges = msg.ranges
