@@ -59,4 +59,15 @@ To use this package:
 <p align="center"> 
    <img src="https://github.com/TofunmiSodimu/ROS-projects/blob/main/extra/chase_object_resize.gif" alt="animated" />
 </p>
-6. akka
+
+
+5. 'navigate_to_goal' - This ROS2 package
+
+<p align="center"> 
+   <h4 align="center"> Wall Following Demo</h4>
+</p>
+<p align="center"> 
+   <img src="https://github.com/TofunmiSodimu/ROS-projects/blob/main/extra/wall_following_resize.gif" alt="animated" />
+</p>
+
+6. zslsl
