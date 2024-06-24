@@ -9,7 +9,7 @@ To use this package:
   - Source the overlay in another terminal - 'source install/setup.bash'. Run 'ros2 run turtlesim turtle_teleop_key'.
 
 #### Follow Me Demo
-[![Watch the video](https://raw.githubusercontent.com/username/repository/branch/path/to/thumbnail.jpg)](https://raw.githubusercontent.com/username/repository/branch/path/to/video.mp4)
+[![Follow Me Demo](https://github.com/TofunmiSodimu/ROS-projects/blob/main/follow_me.png)](https://github.com/TofunmiSodimu/ROS-projects/blob/main/Follow_me.mp4)
 
 ![Demo](https://github.com/TofunmiSodimu/ROS-projects/assets/35805326/388dd5b1-f367-4079-ade6-7291a491c3d6)
 ![Demo](https://github.com/TofunmiSodimu/ROS-projects/assets/35805326/062a366a-b3cc-4828-93dd-f4cb5364cd3f)
