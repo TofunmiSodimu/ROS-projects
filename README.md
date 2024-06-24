@@ -61,7 +61,13 @@ To use this package:
 </p>
 
 
-5. 'navigate_to_goal' - This ROS2 package
+5. 'navigate_to_goal' - This ROS2 package implements the 'wall-following' algorithm to avoid obstacles while moving from one waypoint to the other.
+      - 'goToGoal' node: This nodes subscribes to the odometry and lidar topics of the turtlebot3 and uses it to determine distance from goal/waypoints and proximity to obstacles. It then makes use of a controller to move the robot to each waypoint/goal.
+
+To use this package:
+  - ** Source underlay in all terminals used by either adding to shell startup script or running in terminal **
+  - In one terminal, cd into ROS2 workspace where package is stored and build - 'colcon build --packages-select navigate_to_goal'
+  - Source the overlay in another terminal - 'source install/setup.bash'. Run 'ros2 run navigate_to_goal goToGoal.py'.
 
 <p align="center"> 
    <h4 align="center">Wall Following Demo</h4>
@@ -71,7 +77,13 @@ To use this package:
 </p>
 
 
-6. 'nav_stack' - This ROS2 package
+6. 'nav_stack' - This ROS2 package controls the movement of the turtlebot3 from one waypoint to the other, using a pre-determined map of the environment and the ROS2 navigation stack.
+   - 'navigation' node: This node publishes waypoints to the goal_pose topic of the robot. It also subscribes to the feedback topic to print out updates on the task.
+
+To use this package:
+  - ** Source underlay in all terminals used by either adding to shell startup script or running in terminal **
+  - In one terminal, cd into ROS2 workspace where package is stored and build - 'colcon build --packages-select nav_stack'
+  - Source the overlay in another terminal - 'source install/setup.bash'. Run 'ros2 run nav_stack navigation.py'.
 
 
 7. zslsl
