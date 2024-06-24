@@ -1,4 +1,4 @@
-1. Follow_me - This is a ROS2 package implementing a 'follow me' robot. The package contains a 'follower' node and a 'followme_launch' launch file.
+1. 'Follow_me' - This is a ROS2 package implementing a 'follow me' robot. The package contains a 'follower' node and a 'followme_launch' launch file.
    - 'Follower.py' node: This node subscribes to the pose of turtle1, calculates the new angular and linear velocities to make the pose of turtle2 match that of turtle1, and
      publishes the new command velocities to turtle2.
    - 'followme_launch.py' launch file: This file launches a screen with two turtles and the 'follower' node.
@@ -12,3 +12,4 @@
 #### Follow Me Demo
 ![Screencast from 2024-06-07 12-35-02 (1)](https://github.com/TofunmiSodimu/ROS-projects/assets/35805326/388dd5b1-f367-4079-ade6-7291a491c3d6)
 
+2. 'find_ball.py' - python code that uses opencv to detect a circular object in the camera frame and draws the circle around the object. This code is used in subsequent ROS2 packages.
