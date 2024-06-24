@@ -12,7 +12,7 @@
    <h4 align="center">Follow Me Demo</h4>
 </p>
 <p align="center"> 
-   <img src="https://github.com/TofunmiSodimu/ROS-projects/blob/main/Follow_me.gif" alt="animated" />
+   <img src="https://github.com/TofunmiSodimu/ROS-projects/blob/main/extra/Follow_me.gif" alt="animated" />
 </p>
 
 2. 'find_ball.py' - python code that uses opencv to detect a circular object in a camera frame and draws the circle around the object. This code is used in subsequent ROS2 packages.
@@ -36,7 +36,7 @@ To use this package:
    <h4 align="center">Object Follower Demo</h4>
 </p>
 <p align="center"> 
-   <img src="https://github.com/TofunmiSodimu/ROS-projects/blob/main/Object_follower_resized.gif" alt="animated" />
+   <img src="https://github.com/TofunmiSodimu/ROS-projects/blob/main/extra/Object_follower_resized.gif" alt="animated" />
 </p>
 
 
